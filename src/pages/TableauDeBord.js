@@ -1,9 +1,11 @@
 import '../styles/TableauDeBord.css';
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { getAttestations } from '../services/attestations'; 
 
 const TableauDeBord = () => {
+  
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 

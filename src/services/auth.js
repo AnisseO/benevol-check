@@ -24,6 +24,6 @@ export const register = async (userData) => {
     const response = await api.post('/register', userData);
     return response.data;
   } catch (error) {
-    throw error.response.data;
-  }
+    throw new Error(error.response?.data?.message || "Échec de l'inscription");
+    }
 };
