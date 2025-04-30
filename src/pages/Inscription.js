@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth';
-import '../../styles/Inscription.css'; // Utilisez le même style que Connexion.css
+import '../styles/Inscription.css'; 
 
 const Inscription = () => {
   const [formData, setFormData] = useState({
     nom: '',
     email: '',
     password: '',
-    role: 'bénévole' // 'responsable' si besoin
+    role: 'bénévole' 
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();

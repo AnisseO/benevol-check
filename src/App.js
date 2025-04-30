@@ -1,6 +1,7 @@
 import './styles/App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import Inscription from './pages/Inscription';
 import Connexion from './pages/Connexion';
 import TableauDeBord from './pages/TableauDeBord';
 import RemplirAttestation from './pages/RemplirAttestation';
@@ -11,6 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Connexion />} />
+        <Route path='/Inscription' element={<Inscription/>} />
         <Route
           path="/tableau-de-bord"
           element={

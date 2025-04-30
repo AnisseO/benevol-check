@@ -51,23 +51,4 @@ const RemplirAttestation = () => {
   );
 };
 
-export default function RemplirAttestation() {
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = async (data) => {
-    try {
-      await createAttestation(data);
-      alert('Attestation enregistrée !');
-    } catch (error) {
-      console.error("Erreur :", error);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("nomAssociation")} placeholder="Nom de l'association" />
-      {/* Ajoutez tous les champs nécessaires ici */}
-      <button type="submit">Soumettre</button>
-    </form>
-  );
-}
+export default RemplirAttestation ;
