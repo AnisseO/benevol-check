@@ -14,6 +14,16 @@ const TableauDeBord = () => {
     }
   };
 
+const [attestations, setAttestations] = useState([]);
+
+useEffect(() => {
+  const fetchAttestations = async () => {
+    const data = await getAttestations();
+    setAttestations(data);
+  };
+  fetchAttestations();
+}, []);
+
   return (
     <div className="tableau-de-bord">
       <h1>Bonjour, {user?.email || 'utilisateur'} !</h1>

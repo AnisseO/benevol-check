@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { createAttestation } from '../services/attestations';
 
 const RemplirAttestation = () => {
   const [association, setAssociation] = useState('');
@@ -49,4 +51,23 @@ const RemplirAttestation = () => {
   );
 };
 
-export default RemplirAttestation;
+export default function RemplirAttestation() {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      await createAttestation(data);
+      alert('Attestation enregistrée !');
+    } catch (error) {
+      console.error("Erreur :", error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("nomAssociation")} placeholder="Nom de l'association" />
+      {/* Ajoutez tous les champs nécessaires ici */}
+      <button type="submit">Soumettre</button>
+    </form>
+  );
+}
