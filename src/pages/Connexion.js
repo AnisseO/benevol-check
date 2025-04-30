@@ -2,6 +2,8 @@ import '../styles/Connexion.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
+import { Link } from 'react-router-dom'; 
+
 
 const Connexion = () => {
   const [email, setEmail] = useState('');
@@ -48,7 +50,12 @@ const Connexion = () => {
         <button type="submit">Se connecter</button>
       </form>
 
-      
+      <div className="auth-switch">
+      <p>Pas encore de compte ?</p>
+      <Link to="/inscription" className="auth-link">
+        Créer un compte
+      </Link>
+    </div>
     </div>
   );
 };

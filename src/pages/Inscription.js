@@ -61,6 +61,10 @@ const Inscription = () => {
 
         <button type="submit">S'inscrire</button>
       </form>
+
+      <p className="login-link">
+        Déjà un compte ? <a href="/">Se connecter</a>
+      </p>
     </div>
   );
 };
