@@ -1,0 +1,31 @@
+import './styles/App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import Inscription from './pages/Inscription';
+import Connexion from './pages/Connexion';
+import TableauDeBord from './pages/TableauDeBord';
+import RemplirAttestation from './pages/RemplirAttestation';
+import ProtectedRoute from './components/ProtectedRoute';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Connexion />} />
+        <Route path='/inscription' element={<Inscription/>} />
+        <Route
+          path="/tableau-de-bord"
+          element={
+            <ProtectedRoute>
+              <TableauDeBord />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/remplir-attestation" element={<RemplirAttestation />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
