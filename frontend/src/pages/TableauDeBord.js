@@ -30,6 +30,10 @@ useEffect(() => {
     <div className="tableau-de-bord">
       <h1>Bonjour, {user?.email || 'utilisateur'} !</h1>
       
+      {attestations.map((att) => (
+  <div key={att._id}>{att.nomAssociation}</div>
+))}
+
       {/* Bouton de déconnexion */}
       <button 
         onClick={handleLogout}

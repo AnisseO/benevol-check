@@ -1,6 +1,6 @@
 import './styles/App.css';
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Inscription from './pages/Inscription';
 import Connexion from './pages/Connexion';
 import TableauDeBord from './pages/TableauDeBord';

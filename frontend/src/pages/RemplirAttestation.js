@@ -9,10 +9,13 @@ const RemplirAttestation = () => {
   const [dateFin, setDateFin] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Envoyer les données au backend
-  };
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+  createAttestation(data) 
+    .then(() => alert('Succès!'))
+    .catch(console.error);
+};
 
   return (
     <div>
