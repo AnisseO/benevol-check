@@ -4,6 +4,7 @@ import { register } from '../services/auth';
 import '../styles/Inscription.css'; 
 
 const Inscription = () => {
+  
   const [formData, setFormData] = useState({
     nom: '',
     email: '',
@@ -11,15 +12,29 @@ const Inscription = () => {
     role: 'bénévole' 
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     try {
-      await register(formData);
-      navigate('/connexion'); // Redirige vers la connexion après inscription
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccess("Inscription réussie ! Vous pouvez vous connecter.");
+        setTimeout(() => navigate("/"), 1500); // Redirige vers login après succès
+      } else {
+        setError(data.message || "Erreur lors de l'inscription.");
+      }
     } catch (err) {
-      setError(err.message);
+      setError("Erreur réseau");
     }
   };
 
