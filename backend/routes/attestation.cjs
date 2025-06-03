@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Attestation = require('../models/Attestation');
+const Attestation = require('../models/Attestation.cjs');
 
 // Créer une attestation
 router.post('/', async (req, res) => {

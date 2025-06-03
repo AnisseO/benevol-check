@@ -3,8 +3,8 @@ require('dotenv').config();
 console.log('Environnement:', process.env.NODE_ENV);
 console.log('Port:', process.env.PORT);
 
-const authRoutes = require('./routes/auth');
-const attestationRoutes = require('./routes/attestations');
+const authRoutes = require('./routes/auth.cjs');
+const attestationRoutes = require('./routes/attestation.cjs');
 
 const express = require('express');
 const cors = require('cors');

@@ -1,12 +1,8 @@
-import express from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user.cjs');
 
 // Inscription
 router.post('/register', async (req, res) => {
@@ -50,4 +46,4 @@ router.post('/login', async (req, res) => {
   res.json({ token, userId: user._id, role: user.role });
 });
 
-export default router;
+module.exports = router;
