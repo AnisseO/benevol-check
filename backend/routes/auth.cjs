@@ -8,21 +8,21 @@ const User = require('../models/user.cjs');
 router.post('/register', async (req, res) => {
   console.log('Tentative inscription :', req.body); 
   try {
-    const { prenom, nom, email, motDePasse, role } = req.body;
-    if (!prenom || !nom || !email || !motDePasse || !role) {
+    const { prenom, nom, email, password, role } = req.body;
+    if (!prenom || !nom || !email || !password || !role) {
       return res.status(400).json({ message: "Tous les champs sont obligatoires." });
     }
 
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: "Email déjà utilisé." });
 
-    const hash = await bcrypt.hash(motDePasse, 10);
+    const hash = await bcrypt.hash(password, 10);
 
     const user = new User({
       prenom,
       nom,
       email,
-      motDePasse: hash,
+      password: hash,
       role
     });
     await user.save();
@@ -36,6 +36,7 @@ module.exports = router;
 
 // Connexion
 router.post('/login', async (req, res) => {
+  console.log('Tentative de connexion :', req.body); 
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });

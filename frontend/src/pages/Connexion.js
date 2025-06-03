@@ -4,24 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
 import { Link } from 'react-router-dom'; 
 import api from '../services/api'; 
+import axios from 'axios';
 
 const Connexion = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const testBackend = async () => {
-      try {
-        const response = await api.get('/test');
-        console.log('Réponse du backend :', response.data);
-      } catch (error) {
-        console.error('Erreur de connexion au backend :', error);
-      }
-    };
-    testBackend();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +24,11 @@ const Connexion = () => {
       localStorage.setItem('token', data.token); // Stocke le token 
       navigate('/tableau-de-bord'); // Redirige vers le tableau de bord
     } catch (err) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
       setError(err.message || 'Identifiants incorrects');
+    }
     }
   };
 
