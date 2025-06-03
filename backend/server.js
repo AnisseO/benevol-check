@@ -2,21 +2,27 @@ require('dotenv').config();
 
 console.log('Environnement:', process.env.NODE_ENV);
 console.log('Port:', process.env.PORT);
-const express = require('express');
 
+const authRoutes = require('./routes/auth');
+const attestationRoutes = require('./routes/attestations');
+
+const express = require('express');
+const cors = require('cors');
 const app = express();
 
-const cors = require('cors');
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
+  origin: 'http://localhost:5173', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Route test
-app.get('/api/test', (req, res) => {
-  res.json({ message: "Backend connecté avec succès !" });
-});
+app.use(express.json());
 
-app.listen(5000, () => {
-  console.log('Backend running on http://localhost:5000');
+app.use('/api/auth', authRoutes);
+app.use('/api/attestations', attestationRoutes);
+
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Serveur backend démarré sur le port ${PORT}`);
 });
