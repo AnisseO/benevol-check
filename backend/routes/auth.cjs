@@ -6,6 +6,7 @@ const User = require('../models/user.cjs');
 
 // Inscription
 router.post('/register', async (req, res) => {
+  console.log('Tentative inscription :', req.body); 
   try {
     const { prenom, nom, email, motDePasse, role } = req.body;
     if (!prenom || !nom || !email || !motDePasse || !role) {

@@ -8,7 +8,7 @@ const attestationSchema = new mongoose.Schema({
   dateDebut: Date,
   dateFin: Date,
   descriptionMission: String,
-  comportements: [String], // ou un objet selon le détail
+  comportements: [String], 
   validee: { type: Boolean, default: false },
   dateValidation: Date,
 }, { timestamps: true });

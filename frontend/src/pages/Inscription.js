@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth';
 import '../styles/Inscription.css'; 
@@ -21,7 +22,7 @@ const Inscription = () => {
     setError("");
     setSuccess("");
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await axios.post("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

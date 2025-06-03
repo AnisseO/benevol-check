@@ -27,11 +27,13 @@ const Connexion = () => {
     e.preventDefault();
     setError('');
     try {
-      const data = await login(email, password);
-      // Stocke le token (ex: dans localStorage ou contexte)
-      localStorage.setItem('token', data.token);
-      // Redirige vers le tableau de bord
-      navigate('/tableau-de-bord');
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/login',
+        {email, password}
+      )
+      const data = response.data;
+      localStorage.setItem('token', data.token); // Stocke le token 
+      navigate('/tableau-de-bord'); // Redirige vers le tableau de bord
     } catch (err) {
       setError(err.message || 'Identifiants incorrects');
     }
