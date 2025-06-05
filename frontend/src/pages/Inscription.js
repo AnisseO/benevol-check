@@ -22,21 +22,15 @@ const Inscription = () => {
     setError("");
     setSuccess("");
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setSuccess("Inscription réussie ! Vous pouvez vous connecter.");
-        setTimeout(() => navigate("/"), 1500); // Redirige vers login après succès
-      } else {
-        setError(data.message || "Erreur lors de l'inscription.");
-      }
+      const response = await axios.post("http://localhost:5000/api/auth/register", formData);
+
+      setSuccess("Inscription réussie ! Vous pouvez vous connecter.");
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
-      setError("Erreur réseau");
-    }
+      setError(
+        err.response?.data?.message || "Erreur lors de l'inscription."
+    );
+  }
   };
 
   return (
@@ -54,7 +48,7 @@ const Inscription = () => {
         />
         <input
           type="email"
-          placeholder="Adresse email"
+          placeholder="Adresse mail"
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
           required
