@@ -44,6 +44,17 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
+// Lister toutes les attestations d’un utilisateur (responsable)
+router.get('/demandes', async (req, res) => {
+  try {
+    const demandes = await Attestation.find({ validee: false });
+    res.json(demandes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors de la récupération des demandes." });
+  }
+});
+
 // Valider une attestation (par responsable)
 router.put('/valider/:id', async (req, res) => {
   try {

@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getAttestations } from '../services/attestations'; 
+import { getDemandesEnAttente } from '../services/attestations';
 
 const TableauDeBord = () => {
   const { user, logout } = useContext(AuthContext);
@@ -18,6 +19,15 @@ const TableauDeBord = () => {
 
   useEffect(() => {
     const fetchAttestations = async () => {
+      if (user?.role === 'responsable') {
+      try {
+        const data = await getDemandesEnAttente();
+      setAttestations(data);
+      } catch (err) {
+        setAttestations([]);
+        console.error("Erreur lors de la récupération des demandes :", err);
+      }
+    }
       try {
         const data = await getAttestations();
         setAttestations(data || []);
@@ -27,7 +37,7 @@ const TableauDeBord = () => {
       }
     };
     fetchAttestations();
-  }, []);
+  }, [user]);
 
   return (
     <div className="tableau-de-bord">
@@ -58,18 +68,17 @@ const TableauDeBord = () => {
         </div>
       ) : user?.role === 'responsable' ? (
         <div>
-          <h2>Demandes à valider</h2>
-          {attestations.filter(att => !att.validee).length === 0 ? (
-            <p>Aucune demande en attente.</p>
-          ) : (
-            attestations
-              .filter(att => !att.validee)
-              .map(att => (
-                <div key={att._id}>
-                  <strong>{att.nomBenevole}</strong> — {att.nomAssociation}
-                  <button>Valider</button>
-                  <button>Rejeter</button>
-                </div>
+          <h2>Demandes à valider pour l'association {user.nomAssociation}</h2>
+          {attestations.length === 0 ? (
+            <p>Aucune demande à valider.</p>
+        ) : (
+          attestations.map(att => (
+            <div key={att._id} className="attestation-item">
+              <strong>{att.nomBenevole} ({att.emailBenevole})</strong>
+              <span> — {att.nomAssociation} — {att.description}</span>
+              <span> — du {new Date(att.dateDebut).toLocaleDateString()} au {new Date(att.dateFin).toLocaleDateString()}</span>
+              {/* À venir : boutons valider/refuser */}
+            </div>
               ))
           )}
         </div>
