@@ -8,8 +8,8 @@ const User = require('../models/user.cjs');
 router.post('/register', async (req, res) => {
   console.log('Tentative inscription :', req.body); 
   try {
-    const { prenom, nom, email, password, role } = req.body;
-    if (!prenom || !nom || !email || !password || !role) {
+    const { nom, email, password, role } = req.body;
+    if (!nom || !email || !password || !role) {
       return res.status(400).json({ message: "Tous les champs sont obligatoires." });
     }
 
@@ -19,7 +19,6 @@ router.post('/register', async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     const user = new User({
-      prenom,
       nom,
       email,
       password: hash,
