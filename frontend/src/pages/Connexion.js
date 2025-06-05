@@ -1,6 +1,7 @@
 import '../styles/Connexion.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import { login } from '../services/auth';
 import { Link } from 'react-router-dom'; 
 import api from '../services/api'; 

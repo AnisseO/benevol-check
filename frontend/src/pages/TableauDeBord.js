@@ -37,6 +37,13 @@ const TableauDeBord = () => {
       {user?.role === 'bénévole' ? (
         <div>
           <h2>Mes attestations</h2>
+          <button
+      onClick={() => navigate('/remplir-attestation')}
+      className="demande-btn"
+      style={{ marginBottom: "16px" }}
+    >
+      Demander une nouvelle attestation
+    </button>
           {attestations.length === 0 ? (
             <p>Aucune attestation pour l’instant.</p>
           ) : (
