@@ -5,11 +5,32 @@ const Attestation = require('../models/Attestation.cjs');
 // Créer une attestation
 router.post('/', async (req, res) => {
   try {
-    const attestation = new Attestation(req.body);
+    const {
+      benevoleId,
+      nomBenevole,
+      emailBenevole,
+      nomAssociation,
+      dateDebut,
+      dateFin,
+      description
+    } = req.body;
+
+    const attestation = new Attestation({
+      benevoleId,
+      nomBenevole,
+      emailBenevole,
+      nomAssociation,
+      dateDebut,
+      dateFin,
+      description,
+      validee: false, // statut en attente
+      dateDemande: new Date()
+    });
     await attestation.save();
     res.status(201).json(attestation);
   } catch (err) {
-    res.status(500).json({ message: 'Erreur lors de la création de l’attestation' });
+    console.error(err); 
+    res.status(500).json({ message: "Erreur lors de la création de l’attestation." });
   }
 });
 

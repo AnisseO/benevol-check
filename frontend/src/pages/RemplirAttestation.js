@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from "../context/AuthContext";
+import api from "../services/api"; 
 import { useForm } from 'react-hook-form';
+import { useNavigate } from "react-router-dom";
 import { createAttestation } from '../services/attestations';
 
 const RemplirAttestation = () => {
-  const [association, setAssociation] = useState('');
-  const [benevole, setBenevole] = useState('');
-  const [dateDebut, setDateDebut] = useState('');
-  const [dateFin, setDateFin] = useState('');
-  const [description, setDescription] = useState('');
+  
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    nomAssociation: "",
+    dateDebut: "",
+    dateFin: "",
+    description: "",
+  });
+  
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = (data) => {
-  createAttestation(data) 
-    .then(() => alert('Succès!'))
-    .catch(console.error);
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    try {
+      // Appelle l’API d’ajout d’attestation
+      await api.post("/attestation", {
+        ...form,
+        benevoleId: user?._id,
+        nomBenevole: user?.nom,
+        emailBenevole: user?.email,
+      });
+      setSuccess("Demande envoyée !");
+      setTimeout(() => navigate("/tableau-de-bord"), 1500);
+    } catch (err) {
+      setError("Erreur lors de la demande.");
+    }
+  };
 
   return (
     <div>
@@ -23,33 +48,37 @@ const RemplirAttestation = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
+          name="nomAssociation"
           placeholder="Association"
-          value={association}
-          onChange={(e) => setAssociation(e.target.value)}
-        />
+          value={form.nomAssociation}
+          onChange={handleChange}
+          required
+        /><br/>
         <input
-          type="text"
-          placeholder="Bénévole"
-          value={benevole}
-          onChange={(e) => setBenevole(e.target.value)}
+          type="date"
+          name="dateDebut"
+          value={form.dateDebut}
+          onChange={handleChange}
+          required
         />
         <input
           type="date"
-          value={dateDebut}
-          onChange={(e) => setDateDebut(e.target.value)}
-        />
-        <input
-          type="date"
-          value={dateFin}
-          onChange={(e) => setDateFin(e.target.value)}
-        />
+          name="dateFin"
+          value={form.dateFin}
+          onChange={handleChange}
+          required
+        /><br/>
         <textarea
+          name="description"
+          value={form.description}
           placeholder="Description de la mission"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+          onChange={handleChange}
+          required
+        /><br/>
         <button type="submit">Soumettre</button>
       </form>
+      {error && <p style={{color:"red"}}>{error}</p>}
+      {success && <p style={{color:"green"}}>{success}</p>}
     </div>
   );
 };
