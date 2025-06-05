@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
   if (!isPasswordValid) return res.status(401).json({ message: "Mot de passe incorrect" });
 
   const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
-  res.json({ token, userId: user._id, role: user.role });
+  return res.json({ token, user: { email: user.email, role: user.role, nom: user.nom, _id: user._id } });
 });
 
 module.exports = router;

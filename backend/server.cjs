@@ -27,7 +27,7 @@ const authRoutes = require('./routes/auth.cjs');
 const attestationRoutes = require('./routes/attestation.cjs');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/attestations', attestationRoutes);
+app.use('/api/attestation', attestationRoutes);
 
 app.use((req, res, next) => {
   console.log('REQ:', req.method, req.url, req.headers.origin);

@@ -9,6 +9,7 @@ import axios from 'axios';
 const Connexion = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setUser } = useContext(AuthContext);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ const Connexion = () => {
       )
       const data = response.data;
       localStorage.setItem('token', data.token); // Stocke le token 
+      setUser(data.user);
       navigate('/tableau-de-bord'); // Redirige vers le tableau de bord
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {

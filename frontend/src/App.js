@@ -13,14 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Connexion />} />
         <Route path='/inscription' element={<Inscription/>} />
-        <Route
-          path="/tableau-de-bord"
-          element={
-            <ProtectedRoute>
-              <TableauDeBord />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/tableau-de-bord" element={<TableauDeBord />}/>
         <Route path="/remplir-attestation" element={<RemplirAttestation />} />
       </Routes>
     </Router>
