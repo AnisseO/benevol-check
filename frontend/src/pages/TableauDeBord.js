@@ -20,20 +20,28 @@ const TableauDeBord = () => {
   useEffect(() => {
     const fetchAttestations = async () => {
       if (user?.role === 'responsable') {
-      try {
-        const data = await getDemandesEnAttente();
-      setAttestations(data);
-      } catch (err) {
-        setAttestations([]);
-        console.error("Erreur lors de la récupération des demandes :", err);
-      }
-    }
-      try {
-        const data = await getAttestations();
-        setAttestations(data || []);
-      } catch (err) {
-        setAttestations([]);
-        console.error("Erreur de récupération des attestations :", err.message);
+
+        try {
+          const data = await getDemandesEnAttente();
+          setAttestations(data);
+        } catch (err) {
+          setAttestations([]);
+          console.error(
+            "Erreur lors de la récupération des demandes :",
+            err
+          );
+        }
+      } else {
+        try {
+          const data = await getAttestations();
+          setAttestations(data || []);
+        } catch (err) {
+          setAttestations([]);
+          console.error(
+            "Erreur de récupération des attestations :",
+            err.message
+          );
+        }
       }
     };
     fetchAttestations();
