@@ -34,16 +34,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Lister toutes les attestations d’un utilisateur (bénévole)
-router.get('/:userId', async (req, res) => {
-  try {
-    const attestations = await Attestation.find({ benevoleId: req.params.userId });
-    res.status(200).json(attestations);
-  } catch (err) {
-    res.status(500).json({ message: 'Erreur lors de la récupération des attestations' });
-  }
-});
-
 // Lister toutes les attestations d’un utilisateur (responsable)
 router.get('/demandes', async (req, res) => {
   try {
@@ -66,6 +56,16 @@ router.put('/valider/:id', async (req, res) => {
     res.status(200).json(attestation);
   } catch (err) {
     res.status(500).json({ message: "Erreur lors de la validation de l’attestation" });
+  }
+});
+
+// Lister toutes les attestations d’un utilisateur (bénévole)
+router.get('/:userId', async (req, res) => {
+  try {
+    const attestations = await Attestation.find({ benevoleId: req.params.userId });
+    res.status(200).json(attestations);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des attestations' });
   }
 });
 

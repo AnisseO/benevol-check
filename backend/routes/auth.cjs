@@ -31,8 +31,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-module.exports = router;
-
 // Connexion
 router.post('/login', async (req, res) => {
   console.log('Tentative de connexion :', req.body); 
