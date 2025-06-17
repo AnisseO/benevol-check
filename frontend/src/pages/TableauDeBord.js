@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getAttestations } from '../services/attestations'; 
-import { getDemandesEnAttente, validerAttestation, refuserAttestation } from '../services/attestations';
+import { getDemandesEnAttente, getAttestationsBenevole, validerAttestation, refuserAttestation } from '../services/attestations';
 
 const TableauDeBord = () => {
   const { user, logout } = useContext(AuthContext);
@@ -20,7 +20,6 @@ const TableauDeBord = () => {
   useEffect(() => {
     const fetchAttestations = async () => {
       if (user?.role === 'responsable') {
-
         try {
           const data = await getDemandesEnAttente();
           setAttestations(data);
@@ -31,19 +30,19 @@ const TableauDeBord = () => {
             err
           );
         }
-      } else {
-        try {
-          const data = await getAttestations();
-          setAttestations(data || []);
-        } catch (err) {
-          setAttestations([]);
-          console.error(
-            "Erreur de récupération des attestations :",
-            err.message
-          );
-        }
+      } else if (user?.role === 'bénévole') {
+      try {
+        const data = await getAttestationsBenevole(user._id);
+        setAttestations(data || []);
+      } catch (err) {
+        setAttestations([]);
+        console.error(
+          "Erreur de récupération des attestations :",
+          err.message
+        );
       }
-    };
+    }
+  };
     fetchAttestations();
   }, [user]);
 
@@ -53,8 +52,31 @@ const TableauDeBord = () => {
 
       {/* Affichage différent selon le rôle */}
       {user?.role === 'bénévole' ? (
+        
         <div>
           <h2>Mes attestations</h2>
+          <ul>
+        {attestations.map(att => (
+          <li key={att._id}>
+            <strong>{att.nomAssociation}</strong>
+            {" — du "}
+            {new Date(att.dateDebut).toLocaleDateString()}{" au "}
+            {new Date(att.dateFin).toLocaleDateString()}
+            {" — "}
+            <span
+              style={{
+                color: att.validee ? "green" : "orange",
+                fontWeight: "bold",
+                marginLeft: 8
+              }}
+            >
+              {att.validee ? "Validée" : "En attente"}
+            </span>
+          </li>
+        ))}
+          {/* Ajouter ici bouton PDF plus tard */}
+
+      </ul>
           <button
       onClick={() => navigate('/remplir-attestation')}
       className="demande-btn"
@@ -62,17 +84,7 @@ const TableauDeBord = () => {
     >
       Demander une nouvelle attestation
     </button>
-          {attestations.length === 0 ? (
-            <p>Aucune attestation pour l’instant.</p>
-          ) : (
-            attestations.map(att => (
-              <div key={att._id}>
-                <strong>{att.nomAssociation}</strong> — Statut : {att.validee ? "Validée" : "En attente"}
-                {/* Ajouter ici bouton PDF plus tard */}
-              </div>
-            ))
-          )}
-          {/* Bouton demander une nouvelle attestation ici plus tard */}
+          
         </div>
       ) : user?.role === 'responsable' ? (
         <div>

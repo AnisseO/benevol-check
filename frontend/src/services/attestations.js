@@ -24,3 +24,8 @@ export const refuserAttestation = async (id) => {
   const res = await api.delete(`/attestation/${id}`);
   return res.data;
 };
+
+export const getAttestationsBenevole = async (benevoleId) => {
+  const res = await api.get(`/attestation/benevole/${benevoleId}`);
+  return res.data;
+};
