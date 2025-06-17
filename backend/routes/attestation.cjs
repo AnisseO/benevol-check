@@ -46,7 +46,7 @@ router.get('/demandes', async (req, res) => {
 });
 
 // Valider une attestation (par responsable)
-router.put('/valider/:id', async (req, res) => {
+router.patch('/:id/valider', async (req, res) => {
   try {
     const attestation = await Attestation.findByIdAndUpdate(
       req.params.id,
@@ -55,6 +55,7 @@ router.put('/valider/:id', async (req, res) => {
     );
     res.status(200).json(attestation);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Erreur lors de la validation de l’attestation" });
   }
 });
