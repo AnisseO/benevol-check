@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getAttestations } from '../services/attestations'; 
-import { getDemandesEnAttente } from '../services/attestations';
+import { getDemandesEnAttente, validerAttestation, refuserAttestation } from '../services/attestations';
 
 const TableauDeBord = () => {
   const { user, logout } = useContext(AuthContext);
@@ -85,7 +85,34 @@ const TableauDeBord = () => {
               <strong>{att.nomBenevole} ({att.emailBenevole})</strong>
               <span> — {att.nomAssociation} — {att.description}</span>
               <span> — du {new Date(att.dateDebut).toLocaleDateString()} au {new Date(att.dateFin).toLocaleDateString()}</span>
-              {/* À venir : boutons valider/refuser */}
+              <div>
+    <h2>Demandes à valider</h2>
+    {attestations.length === 0 ? (
+      <p>Aucune demande à valider.</p>
+    ) : (
+      attestations.map(att => (
+        <div key={att._id}>
+          <strong>{att.nomBenevole}</strong> — {att.nomAssociation}
+          <button onClick={async () => {
+            await validerAttestation(att._id);
+            // Refresh la liste après validation
+            const data = await getDemandesEnAttente();
+            setAttestations(data);
+          }}>
+            Valider
+          </button>
+          <button onClick={async () => {
+            await refuserAttestation(att._id);
+            // Refresh la liste après suppression
+            const data = await getDemandesEnAttente();
+            setAttestations(data);
+          }}>
+            Refuser
+          </button>
+        </div>
+      ))
+    )}
+  </div>
             </div>
               ))
           )}

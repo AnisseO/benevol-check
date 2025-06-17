@@ -59,6 +59,17 @@ router.put('/valider/:id', async (req, res) => {
   }
 });
 
+// Refuser (supprimer) une attestation
+router.delete('/:id', async (req, res) => {
+  try {
+    await Attestation.findByIdAndDelete(req.params.id);
+    res.json({ message: "Attestation supprimée." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors de la suppression." });
+  }
+});
+
 // Lister toutes les attestations d’un utilisateur (bénévole)
 router.get('/:userId', async (req, res) => {
   try {

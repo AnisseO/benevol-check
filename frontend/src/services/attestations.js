@@ -15,6 +15,12 @@ export const getDemandesEnAttente = async () => {
   return res.data;
 };
 
-export const validateAttestation = async (id) => {
-  await api.put(`/attestation/valider/${id}`);
-  };
+export const validerAttestation = async (id) => {
+  const res = await api.patch(`/attestation/${id}/valider`);
+  return res.data;
+};
+
+export const refuserAttestation = async (id) => {
+  const res = await api.delete(`/attestation/${id}`);
+  return res.data;
+};
