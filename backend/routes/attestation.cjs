@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Attestation = require('../models/Attestation.cjs');
+const PDFDocument = require('pdfkit');
 
 // Créer une attestation
 router.post('/', async (req, res) => {
@@ -80,6 +81,38 @@ router.get('/benevole/:benevoleId', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur lors de la récupération des attestations." });
+  }
+});
+
+// Génération du PDF
+router.get('/:id/pdf', async (req, res) => {
+  try {
+    const att = await Attestation.findById(req.params.id);
+    if (!att) return res.status(404).send("Attestation non trouvée.");
+    if (!att.validee) return res.status(403).send("Attestation non validée.");
+
+    // Créer le PDF
+    const doc = new PDFDocument();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=attestation_${att._id}.pdf`);
+
+    doc.pipe(res);
+
+    doc.fontSize(20).text('Attestation de bénévolat', { align: 'center' });
+    doc.moveDown();
+    doc.fontSize(12).text(`Nom du bénévole : ${att.nomBenevole || ''}`);
+    doc.text(`Email du bénévole : ${att.emailBenevole || ''}`);
+    doc.text(`Nom de l'association : ${att.nomAssociation || ''}`);
+    doc.text(`Mission : ${att.description || ''}`);
+    doc.text(`Période : du ${new Date(att.dateDebut).toLocaleDateString()} au ${new Date(att.dateFin).toLocaleDateString()}`);
+    doc.moveDown();
+    doc.text(`Validée le : ${att.dateValidation ? new Date(att.dateValidation).toLocaleDateString() : ''}`);
+    doc.moveDown(2);
+    doc.text("Signature du responsable :", { align: 'right' });
+    doc.end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur lors de la génération du PDF.");
   }
 });
 
