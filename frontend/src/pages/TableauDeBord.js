@@ -20,6 +20,7 @@ const TableauDeBord = () => {
   useEffect(() => {
     const fetchAttestations = async () => {
       if (user?.role === 'responsable') {
+          <button onClick={() => navigate('/attestations-demandes')}>Voir toutes les demandes</button>
         try {
           const data = await getDemandesEnAttente();
           setAttestations(data);
@@ -54,6 +55,8 @@ const TableauDeBord = () => {
       {user?.role === 'bénévole' ? (
         
         <div>
+          <button onClick={() => navigate('/attestations')}>Voir mes attestations</button>
+
           <h2>Mes attestations</h2>
           <ul>
   {attestations.map(att => (
