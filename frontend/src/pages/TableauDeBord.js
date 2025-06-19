@@ -56,59 +56,39 @@ const TableauDeBord = () => {
         <div>
           <h2>Mes attestations</h2>
           <ul>
-        {attestations.map(att => (
-          <li key={att._id}>
-            <strong>{att.nomAssociation}</strong>
-            {" — du "}
-            {new Date(att.dateDebut).toLocaleDateString()}{" au "}
-            {new Date(att.dateFin).toLocaleDateString()}
-            {" — "}
-            <span
-              style={{
-                color: att.validee ? "green" : "orange",
-                fontWeight: "bold",
-                marginLeft: 8
-              }}
-            >
-              {att.validee ? "Validée" : "En attente"}
-            </span>
-            {attestations.map(att => (
-  <li key={att._id}>
-    <strong>{att.nomAssociation}</strong>
-    {" — du "}
-    {new Date(att.dateDebut).toLocaleDateString()}{" au "}
-    {new Date(att.dateFin).toLocaleDateString()}
-    {" — "}
-    <span
-      style={{
-        color: att.validee ? "green" : "orange",
-        fontWeight: "bold",
-        marginLeft: 8
-      }}
-    >
-      {att.validee ? "Validée" : "En attente"}
-    </span>
-    {/* Bouton PDF seulement si validée */}
-    {att.validee && (
-      <button
-        style={{ marginLeft: 12 }}
-        onClick={() =>
-          window.open(
-            `http://localhost:5000/api/attestation/${att._id}/pdf`,
-            "_blank"
-          )
-        }
+  {attestations.map(att => (
+    <li key={att._id}>
+      <strong>{att.nomAssociation}</strong>
+      {" — du "}
+      {new Date(att.dateDebut).toLocaleDateString()}{" au "}
+      {new Date(att.dateFin).toLocaleDateString()}
+      {" — "}
+      <span
+        style={{
+          color: att.validee ? "green" : "orange",
+          fontWeight: "bold",
+          marginLeft: 8
+        }}
       >
-        Télécharger PDF
-      </button>
-    )}
-  </li>
-))}
+        {att.validee ? "Validée" : "En attente"}
+      </span>
+      {att.validee && (
+        <button
+          style={{ marginLeft: 12 }}
+          onClick={() =>
+            window.open(
+              `http://localhost:5000/api/attestation/${att._id}/pdf`,
+              "_blank"
+            )
+          }
+        >
+          Télécharger PDF
+        </button>
+      )}
+    </li>
+  ))}
+</ul>
 
-          </li>
-        ))}
-
-      </ul>
           <button
       onClick={() => navigate('/remplir-attestation')}
       className="demande-btn"
