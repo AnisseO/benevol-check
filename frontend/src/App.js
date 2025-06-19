@@ -5,7 +5,8 @@ import Inscription from './pages/Inscription';
 import Connexion from './pages/Connexion';
 import TableauDeBord from './pages/TableauDeBord';
 import RemplirAttestation from './pages/RemplirAttestation';
-import ProtectedRoute from './components/ProtectedRoute';
+import AttestationsDemandes from './pages/AttestationEnAttente';
+import Attestations from './pages/Attestation';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path='/inscription' element={<Inscription/>} />
         <Route path="/tableau-de-bord" element={<TableauDeBord />}/>
         <Route path="/remplir-attestation" element={<RemplirAttestation />} />
+        <Route path="/attestations" element={<Attestations />} />
+        <Route path="/attestations-demandes" element={<AttestationsDemandes />} />
       </Routes>
     </Router>
   );
