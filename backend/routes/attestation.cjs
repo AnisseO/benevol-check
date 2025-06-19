@@ -49,15 +49,21 @@ router.get('/demandes', async (req, res) => {
 // Valider une attestation (par responsable)
 router.patch('/:id/valider', async (req, res) => {
   try {
+    // On attend evaluationComportements dans le body
+    const { evaluationComportements } = req.body;
     const attestation = await Attestation.findByIdAndUpdate(
       req.params.id,
-      { validee: true, dateValidation: new Date() },
+      {
+        validee: true,
+        dateValidation: new Date(),
+        evaluationComportements // On met à jour ce champ si envoyé
+      },
       { new: true }
     );
-    res.status(200).json(attestation);
+    res.json(attestation);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Erreur lors de la validation de l’attestation" });
+    res.status(500).json({ message: "Erreur lors de la validation." });
   }
 });
 
