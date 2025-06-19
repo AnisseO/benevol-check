@@ -31,6 +31,9 @@ const TableauDeBord = () => {
             err
           );
         }
+
+        <button onClick={() => navigate('/attestations')}>Voir mes attestations</button>
+
       } else if (user?.role === 'bénévole') {
       try {
         const data = await getAttestationsBenevole(user._id);
