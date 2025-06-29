@@ -65,6 +65,9 @@ const RemplirAttestation = () => {
       });
       setSuccess("Demande envoyée !");
       setTimeout(() => navigate("/tableau-de-bord"), 1500);
+      console.log("J’envoie à la BDD :", {
+  evaluationComportements: evaluation
+});
     } catch (err) {
       setError("Erreur lors de la demande.");
     }

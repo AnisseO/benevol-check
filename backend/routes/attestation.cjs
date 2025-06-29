@@ -13,7 +13,8 @@ router.post('/', async (req, res) => {
       nomAssociation,
       dateDebut,
       dateFin,
-      description
+      description,
+      evaluationComportements
     } = req.body;
 
     const attestation = new Attestation({
@@ -24,6 +25,7 @@ router.post('/', async (req, res) => {
       dateDebut,
       dateFin,
       description,
+      evaluationComportements,
       validee: false, // statut en attente
       dateDemande: new Date()
     });
@@ -56,7 +58,7 @@ router.patch('/:id/valider', async (req, res) => {
       {
         validee: true,
         dateValidation: new Date(),
-        evaluationComportements // On met à jour ce champ si envoyé
+        evaluationComportements // On met à jour ce champ si modifié
       },
       { new: true }
     );
