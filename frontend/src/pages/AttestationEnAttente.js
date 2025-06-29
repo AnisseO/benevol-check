@@ -54,6 +54,7 @@ const AttestationsDemandes = () => {
     setAttestations(data || []);
     setOpened(null);
     setEvaluation(null);
+    console.log("J’envoie au back : ", evaluation);
   };
 
   const handleRefuser = async (att) => {

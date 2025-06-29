@@ -51,8 +51,12 @@ router.get('/demandes', async (req, res) => {
 // Valider une attestation (par responsable)
 router.patch('/:id/valider', async (req, res) => {
   try {
+    console.log("BODY PATCH VALIDATION:", req.body);
     // On attend evaluationComportements dans le body
-    const { evaluationComportements } = req.body;
+    const { evaluationComportements } = req.body || {};
+    if (!evaluationComportements) {
+      return res.status(400).json({ message: "Champ evaluationComportements manquant dans le body." });
+    }
     const attestation = await Attestation.findByIdAndUpdate(
       req.params.id,
       {
@@ -98,7 +102,8 @@ router.get('/:id/pdf', async (req, res) => {
     const att = await Attestation.findById(req.params.id);
     if (!att) return res.status(404).send("Attestation non trouvée.");
     if (!att.validee) return res.status(403).send("Attestation non validée.");
-
+    const evaluation = att.evaluationComportements || { I: [], II: [], III: [] };
+    
     // Créer le PDF
     const doc = new PDFDocument();
     res.setHeader('Content-Type', 'application/pdf');
@@ -114,6 +119,14 @@ router.get('/:id/pdf', async (req, res) => {
     doc.text(`Mission : ${att.description || ''}`);
     doc.text(`Période : du ${new Date(att.dateDebut).toLocaleDateString()} au ${new Date(att.dateFin).toLocaleDateString()}`);
     doc.moveDown();
+    ["I", "II", "III"].forEach(axe => {
+    doc.fontSize(13).fillColor("black").text(`Axe ${axe} :`, { underline: true, continued: false });
+    AXES[axe].forEach((critere, idx) => {
+      const coche = evaluation[axe] && evaluation[axe][idx] ? "[x]" : "[ ]";
+      doc.fontSize(11).fillColor("black").text(`${coche} ${critere}`, { indent: 20 });
+    });
+    doc.moveDown();
+    });
     doc.text(`Validée le : ${att.dateValidation ? new Date(att.dateValidation).toLocaleDateString() : ''}`);
     doc.moveDown(2);
     doc.text("Signature du responsable :", { align: 'right' });
@@ -123,6 +136,27 @@ router.get('/:id/pdf', async (req, res) => {
     res.status(500).send("Erreur lors de la génération du PDF.");
   }
 });
+
+const AXES = {
+  I: [
+    "Il a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
+    "Il a exercé son activité sans avoir besoin d'une supervision",
+    "Il a réagi avec pertinence pour modifier sa façon de faire face aux problèmes rencontrés",
+    "Il a proposé des idées pour rendre son activité plus efficace ou plus conviviale."
+  ],
+  II: [
+    "Il a facilement trouvé sa place parmi les autres membres du groupe",
+    "Dans son action, il a tenu compte de l'activité des autres membres de son équipe",
+    "Dans les moments de tension, il a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
+    "Il a montré des capacités pour motiver l'activité des autres et les solliciter en leur apportant si nécessaire un conseil ou un appui."
+  ],
+  III: [
+    "Il a exercé son activité dans le respect des règles, de pratiques et des valeurs de l'association",
+    "Il s'est senti personnellement concerné par la bonne réalisation des tâches ou la conduite des projets jusqu'à leur accomplissement",
+    "Il s'est intéressé à la vie de l'association, à son projet associatif et à ses diverses activités.",
+    "Il s'est montré prêt à prendre des responsabilités dans l'animation, la vie collective ou le développement de l'association."
+  ]
+};
 
 
 module.exports = router;
