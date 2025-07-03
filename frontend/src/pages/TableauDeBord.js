@@ -54,7 +54,7 @@ const TableauDeBord = () => {
   return (
     <div className="tableau-de-bord">
       <div className="header">
-        <img src="/assets/logo_france_benevolat.png" alt="Logo France Bénévolat" className="header-logo" />
+        <img src={logo} alt="Logo France Bénévolat" className="header-logo" />
         <div className="header-title">Bonjour, {user?.nom || user?.email || "utilisateur"} !</div>
         <button className="logout-btn" onClick={handleLogout}>Déconnexion</button>
       </div>
