@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { getDemandesEnAttente, validerAttestation, refuserAttestation } from '../services/attestations';
 import { AuthContext } from '../context/AuthContext';
 
-const { user } = useContext(AuthContext);
-
 const AXES = {
   I: [
     "Il a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
@@ -26,6 +24,7 @@ const AXES = {
 };
 
 const AttestationsDemandes = () => {
+  
   const { user } = useContext(AuthContext);
   const [attestations, setAttestations] = useState([]);
   const [opened, setOpened] = useState(null);
