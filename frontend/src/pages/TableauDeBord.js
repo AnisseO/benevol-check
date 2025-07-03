@@ -21,8 +21,7 @@ const TableauDeBord = () => {
   useEffect(() => {
     const fetchAttestations = async () => {
       if (user?.role === 'responsable') {
-          <button onClick={() => navigate('/attestations-demandes')}>Voir toutes les demandes</button>
-        try {
+          try {
           const data = await getDemandesEnAttente();
           setAttestations(data);
         } catch (err) {
@@ -31,16 +30,13 @@ const TableauDeBord = () => {
             "Erreur lors de la récupération des demandes :",
             err
           );
-        }
-
-          <button
+        }      
+<button
             className="new-attestation-btn"
             onClick={() => navigate('/attestations-validees')}
           >
             Voir toutes mes attestations validées
           </button>
-        
-
       } else if (user?.role === 'bénévole') {
       try {
         const data = await getAttestationsBenevole(user._id);
@@ -132,6 +128,13 @@ const TableauDeBord = () => {
             onClick={() => navigate('/attestations-demandes')}
           >
             Voir toutes les demandes en attente
+          </button>
+          <button
+            className="new-attestation-btn"
+            style={{ marginTop: 8 }}
+            onClick={() => navigate('/attestations-validees')}
+          >
+            Voir toutes les attestations validées
           </button>
         </div>
       ) : null}
