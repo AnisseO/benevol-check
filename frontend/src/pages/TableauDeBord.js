@@ -1,4 +1,5 @@
 import '../styles/TableauDeBord.css';
+import logo from '../assets/logo_france_benevolat.png';
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -52,93 +53,82 @@ const TableauDeBord = () => {
 
   return (
     <div className="tableau-de-bord">
-      <h1>Bonjour, {user?.nom || 'utilisateur'} !</h1>
+      <div className="header">
+        <img src="/assets/logo_france_benevolat.png" alt="Logo France Bénévolat" className="header-logo" />
+        <div className="header-title">Bonjour, {user?.nom || user?.email || "utilisateur"} !</div>
+        <button className="logout-btn" onClick={handleLogout}>Déconnexion</button>
+      </div>
 
       {/* Affichage différent selon le rôle */}
-      {user?.role === 'bénévole' ? (
-        
+      {user?.role === "bénévole" ? (
         <div>
-          <button onClick={() => navigate('/attestations')}>Voir toutes mes attestations</button>
-
+          <button className="new-attestation-btn" onClick={() => navigate('/attestations')}>Voir toutes mes attestations</button>
           <h2>Mes attestations</h2>
-          <ul>
-  {attestations.map(att => (
-    <li key={att._id}>
-      <strong>{att.nomAssociation}</strong>
-      {" — du "}
-      {new Date(att.dateDebut).toLocaleDateString()}{" au "}
-      {new Date(att.dateFin).toLocaleDateString()}
-      {" — "}
-      <span
-        style={{
-          color: att.validee ? "green" : "orange",
-          fontWeight: "bold",
-          marginLeft: 8
-        }}
-      >
-        {att.validee ? "Validée" : "En attente"}
-      </span>
-      {att.validee && (
-        <button
-          style={{ marginLeft: 12 }}
-          onClick={() =>
-            window.open(
-              `http://localhost:5000/api/attestation/${att._id}/pdf`,
-              "_blank"
-            )
-          }
-        >
-          Télécharger PDF
-        </button>
-      )}
-    </li>
-  ))}
-</ul>
-
+          <ul className="attestation-list">
+            {attestations.map(att => (
+              <li key={att._id} className="attestation-card">
+                <div className="attestation-header">
+                  <span className="attestation-title">{att.nomAssociation}</span>
+                  <span className={`attestation-status ${att.validee ? "validée" : "en-attente"}`}>
+                    {att.validee ? "Validée" : "En attente"}
+                  </span>
+                </div>
+                <div className="attestation-period">
+                  du {new Date(att.dateDebut).toLocaleDateString()} au {new Date(att.dateFin).toLocaleDateString()}
+                </div>
+                {att.validee && (
+                  <button
+                    className="pdf-btn"
+                    onClick={() =>
+                      window.open(
+                        `http://localhost:5000/api/attestation/${att._id}/pdf`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    Télécharger PDF
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
           <button
-      onClick={() => navigate('/remplir-attestation')}
-      className="demande-btn"
-      style={{ marginBottom: "16px" }}
-    >
-      Demander une nouvelle attestation
-    </button>
-          
+            onClick={() => navigate('/remplir-attestation')}
+            className="new-attestation-btn"
+          >
+            + Demander une nouvelle attestation
+          </button>
         </div>
-      ) : user?.role === 'responsable' ? (
+      ) : user?.role === "responsable" ? (
         <div>
           <h2>Demandes à valider pour l'association {user.nomAssociation}</h2>
           {attestations.length === 0 ? (
             <p>Aucune demande à valider.</p>
-        ) : (
-          attestations.map(att => (
-            <div key={att._id} className="attestation-item">
-              <strong>{att.nomBenevole} ({att.emailBenevole})</strong>
-              <span> — {att.nomAssociation} — {att.description}</span>
-              <span> — du {new Date(att.dateDebut).toLocaleDateString()} au {new Date(att.dateFin).toLocaleDateString()}</span>
-              
-            </div>
-              ))
+          ) : (
+            <ul className="attestation-list">
+              {attestations.map(att => (
+                <li key={att._id} className="attestation-card">
+                  <div className="attestation-header">
+                    <span className="attestation-title">{att.nomBenevole} ({att.emailBenevole})</span>
+                    <span className="attestation-status en-attente">En attente</span>
+                  </div>
+                  <div className="attestation-period">
+                    {att.nomAssociation} — {att.description}
+                    <br />
+                    du {new Date(att.dateDebut).toLocaleDateString()} au {new Date(att.dateFin).toLocaleDateString()}
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
-
           <button
-      style={{ marginBottom: "16px" }}
-      onClick={() => navigate('/attestations-demandes')}
-      className="demande-btn"
-    >
-      Voir toutes les demandes en attente
-    </button>
+            className="new-attestation-btn"
+            onClick={() => navigate('/attestations-demandes')}
+          >
+            Voir toutes les demandes en attente
+          </button>
         </div>
-        
       ) : null}
-
-      
-
-      <button 
-        onClick={handleLogout}
-        className="logout-btn"
-      >
-        Se déconnecter
-      </button>
     </div>
   );
 };
