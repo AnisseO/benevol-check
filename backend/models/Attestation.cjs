@@ -10,7 +10,7 @@ const attestationSchema = new mongoose.Schema({
   description: String,
   validee: { type: Boolean, default: false },
   dateValidation: Date,
-  // Nouveau champ pour l’évaluation (cases à cocher)
+  idResponsable: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   evaluationComportements: {
     I: [Boolean],   // Comportement dans l’action, 4 cases
     II: [Boolean],  // Avec les autres bénévoles, 4 cases

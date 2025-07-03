@@ -7,6 +7,7 @@ import TableauDeBord from './pages/TableauDeBord';
 import RemplirAttestation from './pages/RemplirAttestation';
 import AttestationsDemandes from './pages/AttestationEnAttente';
 import Attestations from './pages/Attestation';
+import AttestationsValidees from './pages/AttestationsValidees';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/remplir-attestation" element={<RemplirAttestation />} />
         <Route path="/attestations" element={<Attestations />} />
         <Route path="/attestations-demandes" element={<AttestationsDemandes />} />
+        <Route path="/attestations-validees" element={<AttestationsValidees />} />
       </Routes>
     </Router>
   );

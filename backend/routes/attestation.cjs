@@ -51,18 +51,19 @@ router.get('/demandes', async (req, res) => {
 // Valider une attestation (par responsable)
 router.patch('/:id/valider', async (req, res) => {
   try {
-    console.log("BODY PATCH VALIDATION:", req.body);
     // On attend evaluationComportements dans le body
     const { evaluationComportements } = req.body || {};
     if (!evaluationComportements) {
       return res.status(400).json({ message: "Champ evaluationComportements manquant dans le body." });
     }
+    const idResponsable = req.user?._id; 
     const attestation = await Attestation.findByIdAndUpdate(
       req.params.id,
       {
         validee: true,
         dateValidation: new Date(),
-        evaluationComportements // On met à jour ce champ si modifié
+        evaluationComportements, // On met à jour ce champ si modifié
+        idResponsable
       },
       { new: true }
     );
@@ -95,6 +96,21 @@ router.get('/benevole/:benevoleId', async (req, res) => {
     res.status(500).json({ message: "Erreur lors de la récupération des attestations." });
   }
 });
+
+// Lister toutes les attestations validées (responsable)
+router.get('/validees/:idResponsable', async (req, res) => {
+  try {
+    const idResponsable = req.params.idResponsable;
+    const attestations = await Attestation.find({
+      validee: true,
+      idResponsable: idResponsable
+    }).sort({ dateValidation: -1 });
+    res.json(attestations);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur lors de la récupération des attestations validées." });
+  }
+});
+
 
 // Génération du PDF
 router.get('/:id/pdf', async (req, res) => {

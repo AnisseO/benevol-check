@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { getDemandesEnAttente, validerAttestation, refuserAttestation } from '../services/attestations';
 import { AuthContext } from '../context/AuthContext';
 
+const { user } = useContext(AuthContext);
+
 const AXES = {
   I: [
     "Il a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
@@ -48,13 +50,12 @@ const AttestationsDemandes = () => {
   };
 
   const handleValider = async (att) => {
-    await validerAttestation(att._id, evaluation);
+    await validerAttestation(att._id, evaluation, user._id);
     // Refresh liste
     const data = await getDemandesEnAttente();
     setAttestations(data || []);
     setOpened(null);
     setEvaluation(null);
-    console.log("J’envoie au back : ", evaluation);
   };
 
   const handleRefuser = async (att) => {

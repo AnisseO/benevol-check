@@ -33,7 +33,13 @@ const TableauDeBord = () => {
           );
         }
 
-        <button onClick={() => navigate('/attestations')}>Voir mes attestations</button>
+          <button
+            className="new-attestation-btn"
+            onClick={() => navigate('/attestations-validees')}
+          >
+            Voir toutes mes attestations validées
+          </button>
+        
 
       } else if (user?.role === 'bénévole') {
       try {
