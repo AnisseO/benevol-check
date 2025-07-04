@@ -69,7 +69,10 @@ const Inscription = () => {
           <option value="responsable">Responsable</option>
         </select>
 
-        <button type="submit">S'inscrire</button>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+          <button type="submit">S'inscrire</button>
+        </div>
+
       </form>
 
       <p className="login-link">
