@@ -88,6 +88,13 @@ label {
   font-weight: 500;
 }
 
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+
 @media (max-width: 480px) {
   .card {
     padding: 18px 6px;

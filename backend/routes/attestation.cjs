@@ -137,12 +137,19 @@ router.get('/:id/pdf', async (req, res) => {
     doc.moveDown();
     ["I", "II", "III"].forEach(axe => {
     doc.fontSize(13).fillColor("black").text(`Axe ${axe} :`, { underline: true, continued: false });
-    AXES[axe].forEach((critere, idx) => {
-      const coche = evaluation[axe] && evaluation[axe][idx] ? "[x]" : "[ ]";
-      doc.fontSize(11).fillColor("black").text(`${coche} ${critere}`, { indent: 20 });
+    let auMoinsUn = false;
+    evaluation[axe]?.forEach((coche, idx) => {
+      if (coche) {
+        doc.fontSize(11).fillColor("black").text(`• ${AXES[axe][idx]}`, { indent: 20 });
+        auMoinsUn = true;
+      }
     });
+    if (!auMoinsUn) {
+      doc.fontSize(11).fillColor("gray").text("Aucune case cochée", { indent: 20 });
+    }
     doc.moveDown();
     });
+
     doc.text(`Validée le : ${att.dateValidation ? new Date(att.dateValidation).toLocaleDateString() : ''}`);
     doc.moveDown(2);
     doc.text("Signature du responsable :", { align: 'right' });
