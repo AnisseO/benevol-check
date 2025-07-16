@@ -37,6 +37,12 @@ const RemplirAttestation = () => {
   ]
   };
 
+  const AXE_LABELS = {
+  I: "Comportement dans l'action",
+  II: "Comportement avec les autres bénévoles",
+  III: "Comportement vis-à-vis de l'association"
+};
+
   const [evaluation, setEvaluation] = useState({
     I: [false, false, false, false],
     II: [false, false, false, false],
@@ -108,7 +114,7 @@ const RemplirAttestation = () => {
         /><br/>
         {Object.entries(AXES).map(([axe, criteres], idxAxe) => (
         <fieldset key={axe} style={{marginBottom: '1em'}}>
-          <legend><strong>Axe {axe}</strong></legend>
+          <legend><strong> {AXE_LABELS[axe]}</strong></legend>
           {criteres.map((critere, idx) => (
             <label key={critere} style={{display:'block', marginBottom:3}}>
               <input

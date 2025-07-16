@@ -67,7 +67,7 @@ const Attestations = () => {
                   <ul>
                     {["I", "II", "III"].map(axe => (
                       <li key={axe}>
-                        <b>Axe {axe}</b>
+                        <b>{AXE_LABELS[axe]}</b>
                         <ul>
                           {att.evaluationComportements && att.evaluationComportements[axe] && att.evaluationComportements[axe].map((checked, idx) => (
                             <li key={idx}>
@@ -91,6 +91,12 @@ const Attestations = () => {
 };
 
 export default Attestations;
+
+const AXE_LABELS = {
+  I: "Comportement dans l'action",
+  II: "Comportement avec les autres bénévoles",
+  III: "Comportement vis-à-vis de l'association"
+};
 
 const AXES = {
   I: [

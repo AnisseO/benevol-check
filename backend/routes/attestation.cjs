@@ -136,7 +136,7 @@ router.get('/:id/pdf', async (req, res) => {
     doc.text(`Période : du ${new Date(att.dateDebut).toLocaleDateString()} au ${new Date(att.dateFin).toLocaleDateString()}`);
     doc.moveDown();
     ["I", "II", "III"].forEach(axe => {
-    doc.fontSize(13).fillColor("black").text(`Axe ${axe} :`, { underline: true, continued: false });
+    doc.fontSize(13).fillColor("black").text(`${AXE_LABELS[axe]} :`, { underline: true, continued: false });
     let auMoinsUn = false;
     evaluation[axe]?.forEach((coche, idx) => {
       if (coche) {
@@ -159,6 +159,13 @@ router.get('/:id/pdf', async (req, res) => {
     res.status(500).send("Erreur lors de la génération du PDF.");
   }
 });
+
+const AXE_LABELS = {
+  I: "Comportement dans l'action",
+  II: "Comportement avec les autres bénévoles",
+  III: "Comportement vis-à-vis de l'association"
+};
+
 
 const AXES = {
   I: [
