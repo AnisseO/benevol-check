@@ -63,7 +63,8 @@ router.patch('/:id/valider', async (req, res) => {
         validee: true,
         dateValidation: new Date(),
         evaluationComportements, // On met à jour ce champ si modifié
-        idResponsable
+        idResponsable,
+        commentaireResponsable
       },
       { new: true }
     );
@@ -139,10 +140,15 @@ router.get('/:id/pdf', async (req, res) => {
     doc.fontSize(13).fillColor("black").text(`${AXE_LABELS[axe]} :`, { underline: true, continued: false });
     let auMoinsUn = false;
     evaluation[axe]?.forEach((coche, idx) => {
-      if (coche) {
-        doc.fontSize(11).fillColor("black").text(`• ${AXES[axe][idx]}`, { indent: 20 });
-        auMoinsUn = true;
+      
+      if (evalRespo?.[axe]?.[idx]) {
+      let color = "black";
+      if (auto?.[axe]?.[idx] !== evalRespo?.[axe]?.[idx]) {
+        color = "#d4328a"; // Rose = modifié
       }
+      doc.fontSize(11).fillColor(color).text(`• ${coche}`, { indent: 20 });
+      auMoinsUn = true;
+    }
     });
     if (!auMoinsUn) {
       doc.fontSize(11).fillColor("gray").text("Aucune case cochée", { indent: 20 });

@@ -16,7 +16,8 @@ const attestationSchema = new mongoose.Schema({
     II: [Boolean],  // Avec les autres bénévoles, 4 cases
     III: [Boolean], // Vis-à-vis de l’association, 4 cases
   },
-  dateDemande: { type: Date, default: Date.now }
+  dateDemande: { type: Date, default: Date.now },
+  commentaireResponsable: { type: String}
 });
 
 module.exports = mongoose.model('Attestation', attestationSchema);
