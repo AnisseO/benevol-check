@@ -140,11 +140,11 @@ router.get('/:id/pdf', async (req, res) => {
     ["I", "II", "III"].forEach(axe => {
     doc.fontSize(13).fillColor("black").text(`${AXE_LABELS[axe]} :`, { underline: true, continued: false });
     let auMoinsUn = false;
-    evaluation[axe]?.forEach((coche, idx) => {
+    AXES[axe]?.forEach((coche, idx) => {
       
       if (evaluation?.[axe]?.[idx]) {
       let color = "black";
-      if (auto?.[axe]?.[idx] !== evaluation?.[axe]?.[idx]) {
+      if (auto?.[axe]?.[idx] !== undefined && auto[axe][idx] !== evaluation?.[axe]?.[idx]) {
         color = "#f89c1e"; // Orange = modifié
       }
       doc.fontSize(11).fillColor(color).text(`• ${coche}`, { indent: 20 });
@@ -157,7 +157,7 @@ router.get('/:id/pdf', async (req, res) => {
     doc.moveDown();
     });
 
-    doc.text(`Validée le : ${att.dateValidation ? new Date(att.dateValidation).toLocaleDateString() : ''}`);
+    doc.fontSize(12).fillColor("black").text(`Validée le : ${att.dateValidation ? new Date(att.dateValidation).toLocaleDateString() : ''}`);
     doc.moveDown(2);
     doc.text("Signature du responsable :", { align: 'right' });
     doc.end();
