@@ -120,6 +120,7 @@ router.get('/:id/pdf', async (req, res) => {
     if (!att) return res.status(404).send("Attestation non trouvée.");
     if (!att.validee) return res.status(403).send("Attestation non validée.");
     const evaluation = att.evaluationComportements || { I: [], II: [], III: [] };
+    const auto = att.evaluationAuto || { I: [], II: [], III: [] };
     
     // Créer le PDF
     const doc = new PDFDocument();
@@ -141,10 +142,10 @@ router.get('/:id/pdf', async (req, res) => {
     let auMoinsUn = false;
     evaluation[axe]?.forEach((coche, idx) => {
       
-      if (evalRespo?.[axe]?.[idx]) {
+      if (evaluation?.[axe]?.[idx]) {
       let color = "black";
-      if (auto?.[axe]?.[idx] !== evalRespo?.[axe]?.[idx]) {
-        color = "#d4328a"; // Rose = modifié
+      if (auto?.[axe]?.[idx] !== evaluation?.[axe]?.[idx]) {
+        color = "#f89c1e"; // Orange = modifié
       }
       doc.fontSize(11).fillColor(color).text(`• ${coche}`, { indent: 20 });
       auMoinsUn = true;

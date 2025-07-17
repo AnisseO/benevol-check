@@ -11,6 +11,11 @@ const attestationSchema = new mongoose.Schema({
   validee: { type: Boolean, default: false },
   dateValidation: Date,
   idResponsable: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  evaluationAuto: {  // Remplie par le bénévole
+    I: [Boolean],   
+    II: [Boolean],  
+    III: [Boolean],
+   },
   evaluationComportements: {
     I: [Boolean],   // Comportement dans l’action, 4 cases
     II: [Boolean],  // Avec les autres bénévoles, 4 cases
