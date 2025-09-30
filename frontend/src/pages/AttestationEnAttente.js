@@ -4,22 +4,22 @@ import { AuthContext } from '../context/AuthContext';
 
 const AXES = {
   I: [
-    "Il a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
-    "Il a exercé son activité sans avoir besoin d'une supervision",
-    "Il a réagi avec pertinence pour modifier sa façon de faire face aux problèmes rencontrés",
-    "Il a proposé des idées pour rendre son activité plus efficace ou plus conviviale."
+    "Il/Elle a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
+    "Il/Elle a exercé son activité sans avoir besoin d'une supervision",
+    "Il/Elle a réagi avec pertinence pour modifier sa façon de faire face aux problèmes rencontrés",
+    "Il/Elle a proposé des idées pour rendre son activité plus efficace ou plus conviviale."
   ],
   II: [
-    "Il a facilement trouvé sa place parmi les autres membres du groupe",
-    "Dans son action, il a tenu compte de l'activité des autres membres de son équipe",
-    "Dans les moments de tension, il a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
-    "Il a montré des capacités pour motiver l'activité des autres et les solliciter en leur apportant si nécessaire un conseil ou un appui."
+    "Il/Elle a facilleement trouvé sa place parmi les autres membres du groupe",
+    "Dans son action, Il/Elle a tenu compte de l'activité des autres membres de son équipe",
+    "Dans les moments de tension, Il/Elle a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
+    "Il/Elle a montré des capacités pour motiver l'activité des autres et les solliciter en leur apportant si nécessaire un conseil ou un appui."
   ],
   III: [
-    "Il a exercé son activité dans le respect des règles, de pratiques et des valeurs de l'association",
-    "Il s'est senti personnellement concerné par la bonne réalisation des tâches ou la conduite des projets jusqu'à leur accomplissement",
-    "Il s'est intéressé à la vie de l'association, à son projet associatif et à ses diverses activités.",
-    "Il s'est montré prêt à prendre des responsabilités dans l'animation, la vie collective ou le développement de l'association."
+    "Il/Elle a exercé son activité dans le respect des règles, de pratiques et des valeurs de l'association",
+    "Il/Elle s'est senti personnellement concerné par la bonne réalisation des tâches ou la conduite des projets jusqu'à leur accomplissement",
+    "Il/Elle s'est intéressé à la vie de l'association, à son projet associatif et à ses diverses activités.",
+    "Il/Elle s'est montré prêt à prendre des responsabilités dans l'animation, la vie collective ou le développement de l'association."
   ]
 };
 
@@ -36,6 +36,8 @@ const AttestationsDemandes = () => {
   const [attestations, setAttestations] = useState([]);
   const [opened, setOpened] = useState(null);
   const [evaluation, setEvaluation] = useState(null);
+  const [commentaire, setCommentaire] = useState("");
+
 
   useEffect(() => {
     const fetch = async () => {
@@ -56,7 +58,8 @@ const AttestationsDemandes = () => {
   };
 
   const handleValider = async (att) => {
-    await validerAttestation(att._id, evaluation, user._id);
+    await validerAttestation(att._id, evaluation, commentaire, user._id);
+    alert("Attestaion validée avec succès !");
     // Refresh liste
     const data = await getDemandesEnAttente();
     setAttestations(data || []);
@@ -96,6 +99,20 @@ const AttestationsDemandes = () => {
             {opened === att._id && (
               <div style={{marginTop: 10, background: "#fafafa", padding: 12, borderRadius: 6}}>
                 <div><b>Description :</b> {att.description}</div>
+                <div>
+                  <div style={{ marginTop: '1em' }}>
+                  <label>
+                    <strong>Commentaire du responsable :</strong>
+                    <textarea
+                      value={commentaire}
+                      onChange={(e) => setCommentaire(e.target.value)}
+                      placeholder="Ajoutez un commentaire (optionnel)"
+                      style={{ width: "100%", minHeight: "60px", marginTop: "5px" }}
+                    />
+                  </label>
+                </div>
+ 
+                </div>
                 {/* Formulaire d’évaluation éditable */}
                 <div style={{marginTop: 8}}>
                   <b>Évaluation à cocher :</b>

@@ -51,6 +51,7 @@ router.get('/demandes', async (req, res) => {
 // Valider une attestation (par responsable)
 router.patch('/:id/valider', async (req, res) => {
   try {
+    console.log("Body reçu pour validation :", req.body);
     // On attend evaluationComportements dans le body
     const { evaluationComportements } = req.body || {};
     if (!evaluationComportements) {
@@ -64,7 +65,7 @@ router.patch('/:id/valider', async (req, res) => {
         dateValidation: new Date(),
         evaluationComportements, // On met à jour ce champ si modifié
         idResponsable,
-        commentaireResponsable
+        commentaire
       },
       { new: true }
     );

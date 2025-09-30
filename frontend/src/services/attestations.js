@@ -15,10 +15,11 @@ export const getDemandesEnAttente = async () => {
   return res.data;
 };
 
-export const validerAttestation = async (id, evaluationComportements, idResponsable) => {
+export const validerAttestation = async (id, evaluationComportements, commentaire, idResponsable) => {
   const res = await api.patch(`/attestation/${id}/valider`, 
     { 
       evaluationComportements,
+      commentaire,
       idResponsable
    });
   return res.data;

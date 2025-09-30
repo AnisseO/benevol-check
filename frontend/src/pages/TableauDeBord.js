@@ -10,7 +10,6 @@ const TableauDeBord = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [attestations, setAttestations] = useState([]);
-  const [showNotif, setShowNotif] = useState(false);
 
   const handleLogout = () => {
     if (window.confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
@@ -39,22 +38,6 @@ const TableauDeBord = () => {
             Voir toutes mes attestations validées
           </button>
       } else if (user?.role === 'bénévole') {
-        if (attestations.length > 0) {
-      // On cherche les attestations validées qui n'ont pas été "notifiées"
-      const notifs = attestations.filter(att => att.validee);
-
-      // On va stocker les IDs notifiés dans le localStorage
-      const vue = JSON.parse(localStorage.getItem("attestationsVues") || "[]");
-      const nonVues = notifs.filter(att => !vue.includes(att._id));
-
-      if (nonVues.length > 0) {
-        setShowNotif(true);
-        // Marquer comme vues pour la prochaine fois
-        const nouveaux = [...vue, ...nonVues.map(att => att._id)];
-        localStorage.setItem("attestationsVues", JSON.stringify(nouveaux));
-      }
-    }
-  
       try {
         const data = await getAttestationsBenevole(user._id);
         setAttestations(data || []);
@@ -80,15 +63,7 @@ const TableauDeBord = () => {
 
       {/* Affichage différent selon le rôle */}
       {user?.role === "bénévole" ? (
-        
         <div>
-                {/* Notification pop-up */}
-          {showNotif && (
-        <div className="notification-popup">
-          🥳 Une ou plusieurs de vos attestations viennent d'être validées !
-          <button onClick={() => setShowNotif(false)}>OK</button>
-        </div>
-          )}
           <button className="new-attestation-btn" onClick={() => navigate('/attestations')}>Voir toutes mes attestations</button>
           <h2>Mes attestations</h2>
           <ul className="attestation-list">

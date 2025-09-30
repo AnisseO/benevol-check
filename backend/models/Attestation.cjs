@@ -22,7 +22,7 @@ const attestationSchema = new mongoose.Schema({
     III: [Boolean], // Vis-à-vis de l’association, 4 cases
   },
   dateDemande: { type: Date, default: Date.now },
-  commentaireResponsable: { type: String}
+  commentaire: { type: String}
 });
 
 module.exports = mongoose.model('Attestation', attestationSchema);
