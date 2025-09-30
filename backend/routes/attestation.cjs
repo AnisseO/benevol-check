@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Attestation = require('../models/Attestation.cjs');
 const PDFDocument = require('pdfkit');
+const path = require("path")
 
 // Créer une attestation
 router.post('/', async (req, res) => {
@@ -129,6 +130,14 @@ router.get('/:id/pdf', async (req, res) => {
 
     doc.pipe(res);
 
+    const logoPath = path.join(__dirname, '../assets/logo.png');
+    try {
+      doc.image(logoPath, 50, 40, { width: 100 });
+    } catch (err) {
+      console.error("Erreur chargement logo :", err);
+    }
+    doc.moveDown(4);
+
     doc.fontSize(20).text('Attestation de bénévolat', { align: 'center' });
     doc.moveDown();
     doc.fontSize(12).text(`Nom du bénévole : ${att.nomBenevole || ''}`);
@@ -186,22 +195,22 @@ const AXE_LABELS = {
 
 const AXES = {
   I: [
-    "Il a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
-    "Il a exercé son activité sans avoir besoin d'une supervision",
-    "Il a réagi avec pertinence pour modifier sa façon de faire face aux problèmes rencontrés",
-    "Il a proposé des idées pour rendre son activité plus efficace ou plus conviviale."
+    "Capacité d'apprentissage ",
+    "Autonomie",
+    "Adaptabilité",
+    "Créativité"
   ],
   II: [
-    "Il a facilement trouvé sa place parmi les autres membres du groupe",
-    "Dans son action, il a tenu compte de l'activité des autres membres de son équipe",
-    "Dans les moments de tension, il a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
-    "Il a montré des capacités pour motiver l'activité des autres et les solliciter en leur apportant si nécessaire un conseil ou un appui."
+    "Sociabilité",
+    "Coopération",
+    "Empathie",
+    "Leadership"
   ],
   III: [
-    "Il a exercé son activité dans le respect des règles, de pratiques et des valeurs de l'association",
-    "Il s'est senti personnellement concerné par la bonne réalisation des tâches ou la conduite des projets jusqu'à leur accomplissement",
-    "Il s'est intéressé à la vie de l'association, à son projet associatif et à ses diverses activités.",
-    "Il s'est montré prêt à prendre des responsabilités dans l'animation, la vie collective ou le développement de l'association."
+    "Rigueur et fiabilité ",
+    "Responsabilité",
+    "Curiosité",
+    "Engagement"
   ]
 };
 
