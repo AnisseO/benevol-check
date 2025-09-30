@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import { getAttestations } from '../services/attestations'; 
 import { getDemandesEnAttente, getAttestationsBenevole, validerAttestation, refuserAttestation } from '../services/attestations';
 import AideButton from '../components/AideButton';
+import ThemeToggle from '../components/ThemeToggle';
 
 const TableauDeBord = () => {
   const { user, logout } = useContext(AuthContext);
@@ -59,6 +60,7 @@ const TableauDeBord = () => {
       <div className="header">
         <img src={logo} alt="Logo France Bénévolat" className="header-logo" />
         <div className="header-title">Bonjour, {user?.nom || user?.email || "utilisateur"} !</div>
+        <ThemeToggle />
         <button className="logout-btn" onClick={handleLogout}>Déconnexion</button>
       </div>
 

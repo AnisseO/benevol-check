@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Attestation = require('../models/Attestation.cjs');
 const PDFDocument = require('pdfkit');
-const path = require("path")
+//import path from "path";
+//import { fileURLToPath } from "url";
 
 // Créer une attestation
 router.post('/', async (req, res) => {
@@ -130,13 +131,17 @@ router.get('/:id/pdf', async (req, res) => {
 
     doc.pipe(res);
 
-    const logoPath = path.join(__dirname, '../assets/logo.png');
+    /*
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const logoPath = path.join(__dirname, "../assets/logo.png");    
     try {
-      doc.image(logoPath, 50, 40, { width: 100 });
-    } catch (err) {
+    doc.image(logoPath, 50, 50, { width: 100 });    }
+    catch (err) {
       console.error("Erreur chargement logo :", err);
     }
     doc.moveDown(4);
+    */
 
     doc.fontSize(20).text('Attestation de bénévolat', { align: 'center' });
     doc.moveDown();
@@ -153,7 +158,7 @@ router.get('/:id/pdf', async (req, res) => {
         align: "left",
         indent: 20,
       });
-      doc.moveDown(2);
+      doc.moveDown();
     }
 
     ["I", "II", "III"].forEach(axe => {
@@ -173,7 +178,7 @@ router.get('/:id/pdf', async (req, res) => {
     if (!auMoinsUn) {
       doc.fontSize(11).fillColor("gray").text("Aucune case cochée", { indent: 20 });
     }
-    doc.moveDown();
+    doc.moveDown(2);
     });
 
     doc.fontSize(12).fillColor("black").text(`Validée le : ${att.dateValidation ? new Date(att.dateValidation).toLocaleDateString() : ''}`);
