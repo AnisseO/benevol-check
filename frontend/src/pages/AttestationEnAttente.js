@@ -59,7 +59,7 @@ const AttestationsDemandes = () => {
 
   const handleValider = async (att) => {
     await validerAttestation(att._id, evaluation, commentaire, user._id);
-    alert("Attestaion validée avec succès !");
+    alert("Attestation validée avec succès !");
     // Refresh liste
     const data = await getDemandesEnAttente();
     setAttestations(data || []);

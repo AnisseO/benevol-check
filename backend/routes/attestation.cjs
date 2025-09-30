@@ -52,12 +52,11 @@ router.get('/demandes', async (req, res) => {
 router.patch('/:id/valider', async (req, res) => {
   try {
     console.log("Body reçu pour validation :", req.body);
-    // On attend evaluationComportements dans le body
-    const { evaluationComportements } = req.body || {};
+
+    const { evaluationComportements, commentaire, idResponsable } = req.body || {};
     if (!evaluationComportements) {
       return res.status(400).json({ message: "Champ evaluationComportements manquant dans le body." });
     }
-    const idResponsable = req.user?._id; 
     const attestation = await Attestation.findByIdAndUpdate(
       req.params.id,
       {
@@ -138,6 +137,16 @@ router.get('/:id/pdf', async (req, res) => {
     doc.text(`Mission : ${att.description || ''}`);
     doc.text(`Période : du ${new Date(att.dateDebut).toLocaleDateString()} au ${new Date(att.dateFin).toLocaleDateString()}`);
     doc.moveDown();
+    if (att.commentaire) {
+      doc.fontSize(12).fillColor("black").text("Commentaire du responsable :", { underline: true });
+      doc.moveDown(0.5);
+      doc.fontSize(11).fillColor("gray").text(att.commentaire, {
+        align: "left",
+        indent: 20,
+      });
+      doc.moveDown(2);
+    }
+
     ["I", "II", "III"].forEach(axe => {
     doc.fontSize(13).fillColor("black").text(`${AXE_LABELS[axe]} :`, { underline: true, continued: false });
     let auMoinsUn = false;
