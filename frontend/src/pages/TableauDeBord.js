@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getAttestations } from '../services/attestations'; 
 import { getDemandesEnAttente, getAttestationsBenevole, validerAttestation, refuserAttestation } from '../services/attestations';
+import AideButton from '../components/AideButton';
 
 const TableauDeBord = () => {
   const { user, logout } = useContext(AuthContext);
@@ -138,6 +139,7 @@ const TableauDeBord = () => {
           </button>
         </div>
       ) : null}
+      <AideButton />
     </div>
   );
 };
