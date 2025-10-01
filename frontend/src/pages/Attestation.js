@@ -15,18 +15,49 @@ const Attestations = () => {
       if (user && user._id) {
         const data = await getAttestationsBenevole(user._id);
         setAttestations(data || []);
+        setFiltered(data || []);
       }
     };
     fetch();
   }, [user]);
 
+  // Filtrage dynamique quand searchBar change
+  useEffect(() => {
+    setFiltered(
+      attestations.filter((att) =>
+        att.nomAssociation?.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, attestations]);
+
   return (
     <div>
       <h2>Mes attestations</h2>
-      <ul style={{listStyle: "none", padding: 0}}>
-        {attestations.map(att => (
-          <li key={att._id} style={{marginBottom: "1em", border: "1px solid #eee", borderRadius: 8, padding: 12}}>
-            <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+
+      <SearchBar
+        placeholder="Rechercher par association..."
+        value={search}
+        onChange={setSearch}
+      />
+
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {filtered.map((att) => (
+          <li
+            key={att._id}
+            style={{
+              marginBottom: "1em",
+              border: "1px solid #eee",
+              borderRadius: 8,
+              padding: 12,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <span>
                 <strong>{att.nomAssociation}</strong>
                 {" — du "}
@@ -37,48 +68,74 @@ const Attestations = () => {
                   style={{
                     color: att.validee ? "green" : "orange",
                     fontWeight: "bold",
-                    marginLeft: 8
+                    marginLeft: 8,
                   }}
                 >
                   {att.validee ? "Validée" : "En attente"}
                 </span>
               </span>
-              <button onClick={() => setOpened(opened === att._id ? null : att._id)}>
-                {opened === att._id ? "Fermer" : "Détails"}
-              </button>
-              {att.validee && (
+
+              <div>
                 <button
-                  style={{ marginLeft: 12 }}
                   onClick={() =>
-                    window.open(
-                      `http://localhost:5000/api/attestation/${att._id}/pdf`,
-                      "_blank"
-                    )
+                    setOpened(opened === att._id ? null : att._id)
                   }
                 >
-                  Télécharger PDF
+                  {opened === att._id ? "Fermer" : "Détails"}
                 </button>
-              )}
+
+                {att.validee && (
+                  <button
+                    style={{ marginLeft: 12 }}
+                    onClick={() =>
+                      window.open(
+                        `http://localhost:5000/api/attestation/${att._id}/pdf`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    Télécharger PDF
+                  </button>
+                )}
+              </div>
             </div>
+
             {/* Détails déroulants */}
             {opened === att._id && (
-              <div style={{marginTop: 10, background: "#fafafa", padding: 12, borderRadius: 6}}>
-                <div><b>Description :</b> {att.description}</div>
-                {/* Affichage auto-évaluation */}
-                <div style={{marginTop: 8}}>
-                  <b>Auto-évaluation :</b>
+              <div
+                style={{
+                  marginTop: 10,
+                  background: "#fafafa",
+                  padding: 12,
+                  borderRadius: 6,
+                }}
+              >
+                <div>
+                  <b>Description :</b> {att.description}
+                </div>
+
+                {/* Auto-évaluation */}
+                <div style={{ marginTop: 8 }}>
+                  <b>Auto-évaluation :</b>
                   <ul>
-                    {["I", "II", "III"].map(axe => (
+                    {["I", "II", "III"].map((axe) => (
                       <li key={axe}>
                         <b>{AXE_LABELS[axe]}</b>
                         <ul>
-                          {att.evaluationComportements && att.evaluationComportements[axe] && att.evaluationComportements[axe].map((checked, idx) => (
-                            <li key={idx}>
-                              <input type="checkbox" checked={checked} readOnly />
-                              {" "}
-                              {AXES[axe][idx]}
-                            </li>
-                          ))}
+                          {att.evaluationComportements &&
+                            att.evaluationComportements[axe] &&
+                            att.evaluationComportements[axe].map(
+                              (checked, idx) => (
+                                <li key={idx}>
+                                  <input
+                                    type="checkbox"
+                                    checked={checked}
+                                    readOnly
+                                  />{" "}
+                                  {AXES[axe][idx]}
+                                </li>
+                              )
+                            )}
                         </ul>
                       </li>
                     ))}
