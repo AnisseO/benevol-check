@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { getAttestationsBenevole } from '../services/attestations';
 import { AuthContext } from '../context/AuthContext';
+import SearchBar from '../components/SearchhBar';
 
 const Attestations = () => {
   const { user } = useContext(AuthContext);
   const [attestations, setAttestations] = useState([]);
   const [opened, setOpened] = useState(null); // stocke l'ID de l’attestation ouverte
+  const [search, setSearch] = useState("");
+  const [filtered, setFiltered] = useState(attestations);
 
   useEffect(() => {
     const fetch = async () => {

@@ -11,8 +11,8 @@ const AXES = {
   ],
   II: [
     "Il/Elle a facilleement trouvé sa place parmi les autres membres du groupe",
-    "Dans son action, Il/Elle a tenu compte de l'activité des autres membres de son équipe",
-    "Dans les moments de tension, Il/Elle a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
+    "Dans son action, il/elle a tenu compte de l'activité des autres membres de son équipe",
+    "Dans les moments de tension, il/elle a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
     "Il/Elle a montré des capacités pour motiver l'activité des autres et les solliciter en leur apportant si nécessaire un conseil ou un appui."
   ],
   III: [
