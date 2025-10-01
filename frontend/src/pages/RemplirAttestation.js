@@ -4,6 +4,8 @@ import api from "../services/api";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
 import { createAttestation } from '../services/attestations';
+import { AXES, AXE_LABELS } from "../components/Axes";
+
 
 const RemplirAttestation = () => {
   
@@ -16,33 +18,7 @@ const RemplirAttestation = () => {
     description: "",
   });
 
-  const AXES = {
-  I: [
-    "Il a bien compris en quoi consistait sa mission pour en maîtriser la pratique",
-    "Il a exercé son activité sans avoir besoin d'une supervision",
-    "Il a réagi avec pertinence pour modifier sa façon de faire face aux problèmes rencontrés",
-    "Il a proposé des idées pour rendre son activité plus efficace ou plus conviviale."
-  ],
-  II: [
-    "Il a facilement trouvé sa place parmi les autres membres du groupe",
-    "Dans son action, il a tenu compte de l'activité des autres membres de son équipe",
-    "Dans les moments de tension, il a su se mettre à la place de l'autre pour comprendre son point de vue et éviter les conflits",
-    "Il a montré des capacités pour motiver l'activité des autres et les solliciter en leur apportant si nécessaire un conseil ou un appui."
-  ],
-  III: [
-    "Il a exercé son activité dans le respect des règles, de pratiques et des valeurs de l'association",
-    "Il s'est senti personnellement concerné par la bonne réalisation des tâches ou la conduite des projets jusqu'à leur accomplissement",
-    "Il s'est intéressé à la vie de l'association, à son projet associatif et à ses diverses activités.",
-    "Il s'est montré prêt à prendre des responsabilités dans l'animation, la vie collective ou le développement de l'association."
-  ]
-  };
-
-  const AXE_LABELS = {
-  I: "Comportement dans l'action",
-  II: "Comportement avec les autres bénévoles",
-  III: "Comportement vis-à-vis de l'association"
-};
-
+  
   const [evaluation, setEvaluation] = useState({
     I: [false, false, false, false],
     II: [false, false, false, false],
