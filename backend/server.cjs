@@ -1,3 +1,6 @@
+import helmet from 'helmet';
+import path from "path";
+
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -15,6 +18,13 @@ console.log('Port:', process.env.PORT);
 const cors = require('cors');
 const express = require('express');
 const app = express();
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 app.use(cors({
   origin: '*',
@@ -39,3 +49,18 @@ app.listen(PORT, () => {
   console.log(`Serveur backend démarré sur le port ${PORT}`);
 });
 
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "default-src": ["'self'"],
+        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        "style-src": ["'self'", "'unsafe-inline'", "https:"],
+        "img-src": ["'self'", "data:", "https:"],
+        "font-src": ["'self'", "https:", "data:"],
+        "connect-src": ["'self'", "https:"],
+      },
+    },
+  })
+);
