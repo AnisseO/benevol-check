@@ -1,6 +1,5 @@
-import helmet from 'helmet';
-import path from "path";
-
+const helmet = require("helmet");
+const path = require("path");
 const mongoose = require('mongoose');
 require('dotenv').config();
 
